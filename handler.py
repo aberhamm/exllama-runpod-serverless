@@ -148,7 +148,6 @@ if __name__ == "__main__":
     logger.info("Starting ExLlama serverless worker with streaming enabled.")
     runpod.serverless.start(
         {
-            "handler": inference,
-            "return_aggregate_stream": True
+            "handler": inference
         }
     )
