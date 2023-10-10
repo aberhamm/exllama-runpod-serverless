@@ -82,6 +82,7 @@ def load_model():
         default_settings = {
             k: getattr(generator.settings, k) for k in dir(generator.settings) if k[:2] != '__'
         }
+
     return generator, default_settings
 
 
@@ -139,7 +140,7 @@ def inference(event) -> Union[str, Generator[str, None, None]]:
         for res in output:
             yield res
     else:
-        output_text = generator.generate_simple(prompt, max_new_tokens = max_new_tokens)
+        output_text = generator.generate_simple(prompt, max_new_tokens=max_new_tokens)
         yield output_text[len(prompt):]
 
 

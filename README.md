@@ -1,13 +1,26 @@
 # exllama-runpod-serverless
 
-> [LLaMA](https://ai.facebook.com/blog/large-language-model-llama-meta-ai/) [GPTQ](https://arxiv.org/abs/2210.17323) models with fast [ExLlama](https://github.com/turboderp/exllama) inference on [RunPod Serverless GPUs](https://www.runpod.io/serverless-gpu)
+> [!NOTE]  
+> [LLaMA](https://ai.facebook.com/blog/large-language-model-llama-meta-ai/)
+> [GPTQ](https://arxiv.org/abs/2210.17323) models with fast
+> [ExLlama](https://github.com/turboderp/exllama) inference on
+> [RunPod](https://runpod.io?ref=2xxro4sy) Serverless.
+> 
+> This is  a fork of Yushi Homma's [exllama-runpod-serverlerss](
+> https://github.com/hommayushi3/exllama-runpod-serverless) repo.
 
 ## Summary
-This Docker image runs a Llama model on a serverless RunPod instance using the optimized [turboderp's exllama repo](https://github.com/turboderp/exllama).
+
+This Docker image runs a Llama model on a serverless RunPod worker
+using the optimized [turboderp's exllama repo](
+https://github.com/turboderp/exllama).
 
 ## Set Up
-1. Create a RunPod account and navigate to the [RunPod Serverless Console](https://www.runpod.io/console/serverless).
-2. (Optional) Create a Network Volume to cache your model to speed up cold starts (but will incur some cost per hour for storage).
+
+1. Create a [RunPod](https://runpod.io?ref=2xxro4sy) account and
+   navigate to the [Serverless Console](https://www.runpod.io/console/serverless).
+2. (Optional) Create a Network Volume to cache your model to speed
+   up cold starts (but will incur some cost per hour for storage).
     - *Note: Only certain Network Volume regions are compatible with certain instance types on RunPod, so try out if your Network Volume makes your desired instance type Unavailable, try other regions for your Network Volume.*
 
 ![70B Network Volume Configuration Example](artifacts/yh_runpod_network_volume_screenshot.png)
@@ -60,6 +73,7 @@ This Docker image runs a Llama model on a serverless RunPod instance using the o
 ![Airoboros 70B Template Configuration Example](artifacts/yh_airoboros_70b_template_screenshot.png)
 
 ## Inference Usage
+
 See the `predict.py` file for an example. For convenience we also copy the code below.
 
 ```py
@@ -168,12 +182,20 @@ if __name__ == '__main__':
     print("Time taken: ", time.time() - start, " seconds")
 ```
 
-Run the above code using the following command in terminal with the runpoint endpoint id assigned to your endpoint in step 5.
+Run the above code using the following command in terminal with
+the RunPod endpoint id assigned to your endpoint in step 5.
+
 ```bash
 RUNPOD_AI_API_KEY='**************' RUNPOD_ENDPOINT_ID='*******' python predict.py
 ```
-To run with streaming enabled, use the `--stream` option. To set generation parameters, use the `--params_json` option to pass a JSON string of parameters:
+
+To run with streaming enabled, use the `--stream` option.
+To set generation parameters, use the `--params_json` option
+to pass a JSON string of parameters:
+
 ```bash
 RUNPOD_AI_API_KEY='**************' RUNPOD_ENDPOINT_ID='*******' python predict.py --params_json '{"temperature": 0.3, "max_tokens": 1000, "prompt_prefix": "USER: ", "prompt_suffix": "ASSISTANT: "}'
 ```
-You can generate the API key [here](https://www.runpod.io/console/serverless/user/settings) under API Keys.
+
+You can generate the API key under your [RunPod Settings](
+https://www.runpod.io/console/serverless/user/settings) under `API Keys`.

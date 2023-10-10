@@ -1,7 +1,6 @@
 import os
 import requests
-from time import sleep
-import logging
+import time
 import argparse
 import sys
 import json
@@ -46,14 +45,17 @@ def stream_output(task_id, stream=False):
     try:
         while True:
             response = requests.get(url, headers=headers)
+
             if response.status_code == 200:
                 data = response.json()
+
                 if len(data['stream']) > 0:
                     new_output = data['stream'][0]['output']
 
                     if stream:
                         sys.stdout.write(new_output[len(previous_output):])
                         sys.stdout.flush()
+
                     previous_output = new_output
                 
                 if data.get('status') == 'COMPLETED':
@@ -63,8 +65,9 @@ def stream_output(task_id, stream=False):
                     
             elif response.status_code >= 400:
                 print(response)
+
             # Sleep for 0.1 seconds between each request
-            sleep(0.1 if stream else 1)
+            time.sleep(0.1 if stream else 1)
     except Exception as e:
         print(e)
         cancel_task(task_id)
@@ -97,7 +100,6 @@ if __name__ == '__main__':
 -sh:no std,no other significant medical conditions."""
     args = parser.parse_args()
     params = json.loads(args.params_json) if args.params_json else "{}"
-    import time
     start = time.time()
     print(run(prompt, params=params, stream=args.stream))
     print("Time taken: ", time.time() - start, " seconds")
